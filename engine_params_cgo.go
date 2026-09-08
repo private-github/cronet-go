@@ -179,6 +179,10 @@ func (p EngineParams) NetworkThreadPriority() float64 {
 }
 
 // SetExperimentalOptions set JSON formatted experimental options to be used in Cronet Engine.
+//
+// Extensions in this build:
+//   - "tls_curves": ordered TLS named groups, e.g. ["X25519MLKEM768","X25519","P-256","P-384"].
+//   - "tls_cipher_suites": allowlist of TLS 1.2 cipher suite names.
 func (p EngineParams) SetExperimentalOptions(options string) {
 	cOptions := C.CString(options)
 	C.Cronet_EngineParams_experimental_options_set(C.Cronet_EngineParamsPtr(unsafe.Pointer(p.ptr)), cOptions)
@@ -187,4 +191,15 @@ func (p EngineParams) SetExperimentalOptions(options string) {
 
 func (p EngineParams) ExperimentalOptions() string {
 	return C.GoString(C.Cronet_EngineParams_experimental_options_get(C.Cronet_EngineParamsPtr(unsafe.Pointer(p.ptr))))
+}
+
+// SkipVerify accept every server certificate without validation.
+// Intended for connecting through trusted MITM proxies that re-sign traffic.
+// Requires a libcronet built from the patched naiveproxy tree.
+func (p EngineParams) SkipVerify() {
+	C.Cronet_EngineParams_skip_cert_verify_set(C.Cronet_EngineParamsPtr(unsafe.Pointer(p.ptr)), C.bool(true))
+}
+
+func (p EngineParams) SkipCertVerify() bool {
+	return bool(C.Cronet_EngineParams_skip_cert_verify_get(C.Cronet_EngineParamsPtr(unsafe.Pointer(p.ptr))))
 }

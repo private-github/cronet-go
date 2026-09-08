@@ -148,8 +148,16 @@ func EngineParamsExperimentalOptionsSet(params uintptr, options string) {
 	cronetEngineParamsExperimentalOptionsSet(params, options)
 }
 
+func EngineParamsSkipCertVerifySet(params uintptr, value bool) {
+	cronetEngineParamsSkipCertVerifySet(params, value)
+}
+
 func EngineParamsEnableCheckResultGet(params uintptr) bool {
 	return cronetEngineParamsEnableCheckResultGet(params)
+}
+
+func EngineParamsSkipCertVerifyGet(params uintptr) bool {
+	return cronetEngineParamsSkipCertVerifyGet(params)
 }
 
 func EngineParamsUserAgentGet(params uintptr) string {

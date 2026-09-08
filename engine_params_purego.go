@@ -141,3 +141,14 @@ func (p EngineParams) SetExperimentalOptions(options string) {
 func (p EngineParams) ExperimentalOptions() string {
 	return cronet.EngineParamsExperimentalOptionsGet(p.ptr)
 }
+
+// SkipVerify accept every server certificate without validation.
+// Intended for connecting through trusted MITM proxies that re-sign traffic.
+// Requires a libcronet built from the patched naiveproxy tree.
+func (p EngineParams) SkipVerify() {
+	cronet.EngineParamsSkipCertVerifySet(p.ptr, true)
+}
+
+func (p EngineParams) SkipCertVerify() bool {
+	return cronet.EngineParamsSkipCertVerifyGet(p.ptr)
+}

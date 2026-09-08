@@ -74,7 +74,9 @@ var (
 	cronetEngineParamsEnablePublicKeyPinningBypassForLocalTrustAnchorsSet func(uintptr, bool)
 	cronetEngineParamsNetworkThreadPrioritySet                            func(uintptr, float64)
 	cronetEngineParamsExperimentalOptionsSet                              func(uintptr, string)
+	cronetEngineParamsSkipCertVerifySet                                   func(uintptr, bool)
 	cronetEngineParamsEnableCheckResultGet                                func(uintptr) bool
+	cronetEngineParamsSkipCertVerifyGet                                   func(uintptr) bool
 	cronetEngineParamsUserAgentGet                                        func(uintptr) uintptr
 	cronetEngineParamsAcceptLanguageGet                                   func(uintptr) uintptr
 	cronetEngineParamsStoragePathGet                                      func(uintptr) uintptr

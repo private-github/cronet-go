@@ -294,7 +294,13 @@ func registerSymbols() error {
 	if err := registerFunc(&cronetEngineParamsExperimentalOptionsSet, "Cronet_EngineParams_experimental_options_set"); err != nil {
 		return err
 	}
+	if err := registerFunc(&cronetEngineParamsSkipCertVerifySet, "Cronet_EngineParams_skip_cert_verify_set"); err != nil {
+		return err
+	}
 	if err := registerFunc(&cronetEngineParamsEnableCheckResultGet, "Cronet_EngineParams_enable_check_result_get"); err != nil {
+		return err
+	}
+	if err := registerFunc(&cronetEngineParamsSkipCertVerifyGet, "Cronet_EngineParams_skip_cert_verify_get"); err != nil {
 		return err
 	}
 	if err := registerFunc(&cronetEngineParamsUserAgentGet, "Cronet_EngineParams_user_agent_get"); err != nil {
