@@ -127,6 +127,8 @@ jobs:
 
   darwin:
     runs-on: macos-15
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -198,6 +200,23 @@ jobs:
         run: |
           CGO_ENABLED=1 go -C test test -c -o ../cronet.test .
           ./cronet.test -test.v -test.run=TestEngineVersion
+      - name: Upload patched test release
+        if: matrix.target == 'darwin/arm64'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="patched-150-test"
+          EXISTING=()
+          for f in lib include include_cgo.go lib_darwin_arm64_cgo.go; do
+            [ -e "$f" ] && EXISTING+=("$f")
+          done
+          tar czf "cronet-darwin-arm64-patched.tar.gz" "${EXISTING[@]}"
+          if ! gh release view "$TAG" --repo "$GITHUB_REPOSITORY" &>/dev/null; then
+            gh release create "$TAG" --prerelease \
+              --title "patched cronet darwin/arm64 (test)" \
+              --notes "Chromium 150.0.7871.63 with skip_cert_verify + tls_curves/tls_cipher_suites patches"
+          fi
+          gh release upload "$TAG" "cronet-darwin-arm64-patched.tar.gz" --clobber
       - uses: actions/upload-artifact@v4
         with:
           name: cronet-${{ matrix.name }}
